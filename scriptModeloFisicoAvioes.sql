@@ -25,6 +25,7 @@ CREATE TABLE IF NOT EXISTS `IngressosDeAvioes`.`Cliente` (
   `Email` VARCHAR(45) NOT NULL,
   `Morada` VARCHAR(100) NOT NULL,
   `Nacionalidade` VARCHAR(15) NOT NULL,
+  `Password` VARCHAR(45) NOT NULL,
   PRIMARY KEY (`NIF`))
 ENGINE = InnoDB;
 
