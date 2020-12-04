@@ -100,7 +100,7 @@ Values
 -- voo
 INSERT INTO voo(id,Numero_de_Voo,Hora_de_partida,Hora_de_chegada,Duraçao,Data_de_partida,Numero_de_bilhetes_Vendidos,Aeroporto_id,Aviao_id,Aeroporto_id1)
 Values
-	(1,'AAA0','10:00','12:00','02:00','2020-12-24',5,2,2,5),
+	(1,'AAA0','10:00','12:00','02:00','2016-12-24',5,2,2,5),
 	(2,'BBB2','13:30','16:00','02:30','2021-01-01',80,7,1,1),
 	(3,'CCC1','07:30','11:00','03:30','2021-01-11',60,9,3,3),
 	(4,'ABC1','20:30','22:00','01:30','2021-02-01',30,6,4,8);
@@ -108,9 +108,9 @@ Values
 -- bilhete
 INSERT INTO bilhete(id,Data,Gate,Numero,Classe,Preço,Cliente_NIF,Voo_id)
 Values
-	(1,'2020-12-04','A12','A01','Economica',30.00,111111111,1),
-	(2,'2020-11-04','A12','A07','Economica',30.00,111111118,1),
-	(3,'2020-11-23','A12','E01','Executiva',120.50,111111113,1),
+	(1,'2015-12-04','A12','A01','Economica',30.00,111111111,1),
+	(2,'2015-11-04','A12','A07','Economica',30.00,111111118,1),
+	(3,'2015-11-23','A12','E01','Executiva',120.50,111111113,1),
 
 	(4,'2020-10-24','B22','E10','Executiva',100.00,111111117,2),
 	(5,'2020-10-13','B22','A01','Economica',25.00,111111116,2),
@@ -123,3 +123,61 @@ Values
 	(10,'2020-12-03','D10','B04','Economica',40.00,111111118,4),
 	(11,'2020-12-02','D10','B05','Economica',40.00,111111113,4),
 	(12,'2020-11-24','D10','F10','Executiva',140.00,111111116,4);
+
+
+-- criar cliente
+CREATE USER 'cliente'@'localhost'
+	identified BY 'clientepassword';
+    
+GRANT SELECT ON IngressosDeAvioes.Bilhete TO 'cliente'@'localhost';
+
+REVOKE DROP, CREATE, DELETE, UPDATE, INSERT 
+ON *.*
+FROM 'cliente'@'localhost';
+
+
+
+CREATE USER 'admin'@'localhost'
+	identified by 'adminpassword';
+
+GRANT ALL ON *.* TO 'admin'@'localhost';
+
+
+DELIMITER $$
+CREATE TRIGGER atualizaQntBilhVend
+AFTER INSERT ON Bilhete
+FOR EACH ROW
+BEGIN
+	UPDATE Voo
+	SET Numero_de_bilhetes_Vendidos = Numero_de_bilhetes_Vendidos + 1
+	WHERE voo.id = NEW.Voo_id
+END $$
+
+DELIMITER $$
+CREATE PROCEDURE montanteGasto
+	(IN user DOUBLE, dia1 DATE, dia2 DATE)
+BEGIN
+SELECT SUM(b.Preço) FROM Bilhete b
+WHERE b.Cliente_NIF = user AND 
+	  dia1 <= b.Data AND
+	  dia2 >= b.Data;
+END$$
+
+CALL montanteGasto(111111111,'2013-12-24','2025-01-01');
+
+
+-- ver esta
+DELIMITER $$
+CREATE PROCEDURE informacaoBilhete
+	(IN user DOUBLE)
+BEGIN
+SELECT (b.Data, b.Gate, b.Numero, b.Classe, b.Preço) FROM Bilhete b
+WHERE b.Cliente_NIF = user 
+AND CURRENT_TIMESTAMP() < DATE_ADD(b.Data, INTERVAL b.Voo_id.Hora_de_partida HOUR);    
+
+        
+END$$
+
+
+
+
