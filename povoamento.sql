@@ -193,21 +193,6 @@ AND CURRENT_TIMESTAMP() < DATE_ADD(b.Data, INTERVAL b.Voo_id.Hora_de_partida HOU
         
 END$$
 
--- Consultar a lista de voos existentes
-
-DELIMITER //
-
-SELECT * from Voo;
-
-END //
-
--- Consultar a lista de aeroportos existentes
-
-DELIMITER //
-
-SELECT * from Aeroporto;
-
-END //
 
 -- Consultar voos disponiveis num aeroporto
 
