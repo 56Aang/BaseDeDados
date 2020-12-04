@@ -18,7 +18,7 @@ USE `IngressosDeAvioes` ;
 -- Table `IngressosDeAvioes`.`Cliente`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `IngressosDeAvioes`.`Cliente` (
-  `NIF` INT NOT NULL,
+  `NIF` DOUBLE NOT NULL,
   `Nome` VARCHAR(45) NOT NULL,
   `Idade` INT NOT NULL,
   `Telemovel` VARCHAR(20) NOT NULL,
@@ -49,6 +49,8 @@ ENGINE = InnoDB;
 CREATE TABLE IF NOT EXISTS `IngressosDeAvioes`.`Aviao` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `Nome` VARCHAR(45) NOT NULL,
+  `Numero_maximo_de_passageiros_classe_economica` INT NOT NULL,
+  `Numero_maximo_de_passageiros_classe_executiva` INT NOT NULL,
   `Numero_maximo_de_passageiros` INT NOT NULL,
   `Tara` DECIMAL(8,2) NOT NULL,
   `Companhia` VARCHAR(45) NOT NULL,
@@ -62,13 +64,11 @@ ENGINE = InnoDB;
 CREATE TABLE IF NOT EXISTS `IngressosDeAvioes`.`Voo` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `Numero_de_Voo` VARCHAR(20) NOT NULL,
-  `Origem` VARCHAR(45) NOT NULL,
-  `Destino` VARCHAR(45) NOT NULL,
   `Hora_de_partida` TIME NOT NULL,
   `Hora_de_chegada` TIME NOT NULL,
+  `Duraçao` TIME NOT NULL,
   `Data_de_partida` DATE NOT NULL,
-  `Tipo_de_viagem` VARCHAR(45) NOT NULL,
-  `Escalas` VARCHAR(45) NOT NULL,
+  `Numero_de_bilhetes_Vendidos` INT NOT NULL,
   `Aeroporto_id` INT NOT NULL,
   `Aviao_id` INT NOT NULL,
   `Aeroporto_id1` INT NOT NULL,
@@ -100,13 +100,11 @@ ENGINE = InnoDB;
 CREATE TABLE IF NOT EXISTS `IngressosDeAvioes`.`Bilhete` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `Data` DATE NOT NULL,
-  `Gate` VARCHAR(30) NOT NULL,
-  `Lugar` VARCHAR(3) NOT NULL,
-  `Classe_no_Aviao` VARCHAR(30) NOT NULL,
-  `Numero_de_Voo` VARCHAR(20) NOT NULL,
-  `Companhia` VARCHAR(45) NOT NULL,
+  `Gate` VARCHAR(3) NOT NULL,
+  `Numero` VARCHAR(3) NOT NULL,
+  `Classe` VARCHAR(30) NOT NULL,
   `Preço` DECIMAL(6,2) NOT NULL,
-  `Cliente_NIF` INT NOT NULL,
+  `Cliente_NIF` DOUBLE NOT NULL,
   `Voo_id` INT NOT NULL,
   PRIMARY KEY (`id`),
   INDEX `fk_Bilhete_Cliente_idx` (`Cliente_NIF` ASC) VISIBLE,
@@ -119,6 +117,24 @@ CREATE TABLE IF NOT EXISTS `IngressosDeAvioes`.`Bilhete` (
   CONSTRAINT `fk_Bilhete_Voo1`
     FOREIGN KEY (`Voo_id`)
     REFERENCES `IngressosDeAvioes`.`Voo` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `IngressosDeAvioes`.`Lugar`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `IngressosDeAvioes`.`Lugar` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `Classe` VARCHAR(45) NOT NULL,
+  `Numero` VARCHAR(3) NOT NULL,
+  `Aviao_id` INT NOT NULL,
+  PRIMARY KEY (`id`, `Aviao_id`),
+  INDEX `fk_Lugar_Aviao1_idx` (`Aviao_id` ASC) VISIBLE,
+  CONSTRAINT `fk_Lugar_Aviao1`
+    FOREIGN KEY (`Aviao_id`)
+    REFERENCES `IngressosDeAvioes`.`Aviao` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
