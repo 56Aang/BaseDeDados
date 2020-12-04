@@ -127,16 +127,22 @@ Values
 
 -- criar cliente
 CREATE USER 'cliente'@'localhost'
-	identified BY 'clientepassword';
-    
+	identified BY 'clientepassword';    
 GRANT SELECT ON IngressosDeAvioes.Bilhete TO 'cliente'@'localhost';
-
+GRANT SELECT ON IngressosDeAvioes.Voo TO 'cliente'@'localhost';
 REVOKE DROP, CREATE, DELETE, UPDATE, INSERT 
 ON *.*
 FROM 'cliente'@'localhost';
 
 
+-- gestor
+CREATE USER 'gestor'@'localhost'
+	identified BY 'gestorpassword';
+GRANT ALL ON *.* TO 'admin'@'localhost'
+REVOKE DROP,DELETE,CREATE ON *.* FROM 'gestor'@'localhost';
 
+
+-- admin
 CREATE USER 'admin'@'localhost'
 	identified by 'adminpassword';
 
@@ -205,9 +211,9 @@ BEGIN
 	SELECT Lugar.Numero,Lugar.Classe FROM Lugar
 	LEFT JOIN Aviao ON Lugar.Aviao_id = Aviao.id
 	LEFT JOIN Voo ON Voo.Aviao_id=Aviao.id
-	WHERE Voo.id=Lugar AND Lugar.Numero NOT IN (SELECT Bilhete.Numero FROM Bilhete WHERE Bilhete.voo_id=id_voo)
+	WHERE Voo.id=id_voo AND Lugar.Numero NOT IN (SELECT Bilhete.Numero FROM Bilhete WHERE Bilhete.voo_id=id_voo)
 END //
-
+CALL lugaresLivres(1);
 
 
 -- REQUISITOS ADMINISTRADOR
