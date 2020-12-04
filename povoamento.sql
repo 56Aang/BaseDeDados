@@ -167,7 +167,7 @@ CALL montanteGasto(111111111,'2013-12-24','2025-01-01');
 
 
 -- ver esta
-montanteGastoDELIMITER $$
+DELIMITER $$
 CREATE PROCEDURE informacaoBilhete
 	(IN user DOUBLE)
 BEGIN
@@ -178,6 +178,82 @@ AND CURRENT_TIMESTAMP() < DATE_ADD(b.Data, INTERVAL b.Voo_id.Hora_de_partida HOU
         
 END$$
 
+-- Consultar a lista de voos existentes
+
+DELIMITER //
+
+SELECT * from Voo;
+
+END //
+
+-- Consultar a lista de aeroportos existentes
+
+DELIMITER //
+
+SELECT * from Aeroporto;
+
+END //
+
+-- Consultar a lista de lugares livres para um voo
+
+DELIMITER //
+
+CREATE PROCEDURE lugaresLivres(IN id_voo INT)
+BEGIN
+		
+END //
 
 
 
+-- REQUISITOS ADMINISTRADOR
+
+-- Consultar voos realizados por uma companhia num dado periodo
+
+DELIMITER // 
+
+CREATE PROCEDURE voosFeitosPorUmaCompanhiaNumPeríodo
+	( IN comp VARCHAR(45), IN dt_i DATE, IN dt_f DATE)
+BEGIN
+	SELECT 
+END //
+
+-- Saber os passageiros que viajaram entre dois aeroportos num dado periodo
+
+
+-- Saber os passageiros de um voo
+
+DELIMITER //
+
+CREATE PROCEDURE passageirosNumVoo(IN id_voo INT)
+BEGIN
+	SELECT c.Nome,c.NIF,b.Cliente_NIF FROM Bilhete b, Cliente c
+    WHERE b.Voo_id = id_voo AND b.Cliente_NIF = c.NIF;
+END //
+
+CALL passageiroNumVoo(2);
+
+-- Verificar quantos bilhetes foram vendidos num dado periodo
+
+DELIMITER //
+
+CREATE FUNCTION bilhetesVendidosNumPeriodo(dt_inicio DATE,dt_fim DATE)
+	RETURNS INT DETERMINISTIC
+BEGIN
+	RETURN (SELECT sum(v.Numero_de_bilhetes_Vendidos) AS Total_Bilhetes FROM Voo v 
+    WHERE v.Data_de_partida >= dt_inicio AND v.Data_de_partida <= dt_fim);
+END //
+
+SELECT bilhetesVendidosNumPeriodo("2021-1-01","2021-03-30");
+
+-- Calcular total faturado num dado período
+
+DELIMITER //
+
+CREATE FUNCTION totalFaturadoNumPeríodo(dt_i DATE, dt_f DATE)
+	RETURNS FLOAT DETERMINISTIC
+BEGIN
+	RETURN(SELECT sum(b.Preço) FROM Bilhete b
+		WHERE b.Data >= dt_i AND b.Data <= dt_f);
+END //
+
+SELECT totalFaturadoNumPeríodo("2015-01-01","2015-12-31");
