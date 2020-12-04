@@ -201,6 +201,15 @@ SELECT * from Aeroporto;
 
 END //
 
+-- Consultar voos disponiveis num aeroporto
+
+DELIMITER //
+
+CREATE PROCEDURE voosDeUmAeroporto(IN id_aep INT)
+BEGIN
+	SELECT * FROM Voo v WHERE v.origem_id = id_aep;
+END //
+
 -- Consultar a lista de lugares livres para um voo
 
 DELIMITER //
@@ -210,7 +219,7 @@ BEGIN
 	SELECT Lugar.Numero,Lugar.Classe FROM Lugar
 	LEFT JOIN Aviao ON Lugar.Aviao_id = Aviao.id
 	LEFT JOIN Voo ON Voo.Aviao_id=Aviao.id
-	WHERE Voo.id=id_voo AND Lugar.Numero NOT IN (SELECT Bilhete.Numero FROM Bilhete WHERE Bilhete.voo_id=id_voo)
+	WHERE Voo.id=id_voo AND Lugar.Numero NOT IN (SELECT Bilhete.Numero FROM Bilhete WHERE Bilhete.voo_id=id_voo);
 END //
 CALL lugaresLivres(1);
 
