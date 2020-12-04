@@ -69,15 +69,15 @@ CREATE TABLE IF NOT EXISTS `IngressosDeAvioes`.`Voo` (
   `Duraçao` TIME NOT NULL,
   `Data_de_partida` DATE NOT NULL,
   `Numero_de_bilhetes_Vendidos` INT NOT NULL,
-  `Aeroporto_id` INT NOT NULL,
+  `Origem_id` INT NOT NULL,
   `Aviao_id` INT NOT NULL,
-  `Aeroporto_id1` INT NOT NULL,
+  `Destino_id` INT NOT NULL,
   PRIMARY KEY (`id`),
-  INDEX `fk_Voo_Aeroporto1_idx` (`Aeroporto_id` ASC) VISIBLE,
+  INDEX `fk_Voo_Aeroporto1_idx` (`Origem_id` ASC) VISIBLE,
   INDEX `fk_Voo_Aviao1_idx` (`Aviao_id` ASC) VISIBLE,
-  INDEX `fk_Voo_Aeroporto2_idx` (`Aeroporto_id1` ASC) VISIBLE,
+  INDEX `fk_Voo_Aeroporto2_idx` (`Destino_id` ASC) VISIBLE,
   CONSTRAINT `fk_Voo_Aeroporto1`
-    FOREIGN KEY (`Aeroporto_id`)
+    FOREIGN KEY (`Origem_id`)
     REFERENCES `IngressosDeAvioes`.`Aeroporto` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
@@ -87,7 +87,7 @@ CREATE TABLE IF NOT EXISTS `IngressosDeAvioes`.`Voo` (
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_Voo_Aeroporto2`
-    FOREIGN KEY (`Aeroporto_id1`)
+    FOREIGN KEY (`Destino_id`)
     REFERENCES `IngressosDeAvioes`.`Aeroporto` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
