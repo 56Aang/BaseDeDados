@@ -1,25 +1,25 @@
 USE IngressosDeAvioes;
 
 -- aeroporto
-INSERT INTO aeroporto(Pais, Localidade, Codigo_Postal, Nome)
+INSERT INTO aeroporto(id,Pais, Localidade, Codigo_Postal, Nome)
 VALUES 
-	('Portugal', 'Maia',  '4470-558', 'Aeroporto Francisco Sá Carneiro'),
-    ('Portugal', 'Lisboa',  '1700-111', 'Aeroporto Humberto Delgado'),
-    ('Portugal', 'Ponta Delgada',  '9500-749', 'Aeroporto de Ponta Delgada João Paulo II'),
-    ('Portugal', 'Santa-Cruz',  '9100-105', 'Aeroporto Internacional da Madeira Cristiano Ronaldo'),
-    ('Espanha', 'Madrid',  '28042', 'Aeroporto de Madrid-Barajas'),
-    ('Espanha', 'Barcelona',  '08820', 'Aeroporto Josep Tarradellas Barcelona-El Prat'),
-	('Inglaterra', 'Londres',  'TW6 1QS', 'Aeroporto de Londres Heathrow'),
-    ('França', 'Roissy-en-France',  '95700', 'Aeroporto de Roissy-Charles-de-Gaulle'),
-    ('Alemanha', 'Frankfurt',  '60547', 'Aeroporto de Frankfurt am Main');
+	(1,'Portugal', 'Maia',  '4470-558', 'Aeroporto Francisco Sá Carneiro'),
+    (2,'Portugal', 'Lisboa',  '1700-111', 'Aeroporto Humberto Delgado'),
+    (3,'Portugal', 'Ponta Delgada',  '9500-749', 'Aeroporto de Ponta Delgada João Paulo II'),
+    (4,'Portugal', 'Santa-Cruz',  '9100-105', 'Aeroporto Internacional da Madeira Cristiano Ronaldo'),
+    (5,'Espanha', 'Madrid',  '28042', 'Aeroporto de Madrid-Barajas'),
+    (6,'Espanha', 'Barcelona',  '08820', 'Aeroporto Josep Tarradellas Barcelona-El Prat'),
+	(7,'Inglaterra', 'Londres',  'TW6 1QS', 'Aeroporto de Londres Heathrow'),
+    (8,'França', 'Roissy-en-France',  '95700', 'Aeroporto de Roissy-Charles-de-Gaulle'),
+    (9,'Alemanha', 'Frankfurt',  '60547', 'Aeroporto de Frankfurt am Main');
  
  -- aviao faltam as classes
-INSERT INTO aviao(Nome, Numero_maximo_de_passageiros,Tara,Companhia)
+INSERT INTO aviao(id,Nome, Numero_maximo_de_passageiros_classe_economica,Numero_maximo_de_passageiros_classe_executiva,Numero_maximo_de_passageiros,Tara,Companhia)
 Values
-	('Airbus A330-900neo',298,23,'TAP'),
-	('Airbus A330-200',263,23,'TAP'),
-	('Airbus A320-200',174,23,'TAP'),
-	('Airbus A330-200',263,23,'TAP');
+	(1,'Airbus A330-900neo',220,78,298,23,'TAP'),
+	(2,'Airbus A330-200',190,73,263,23,'TAP'),
+	(3,'Airbus A320-200',100,74,174,23,'Easyjet'),
+	(4,'Airbus A330-200',200,63,263,23,'Ryanair');
 
 
 -- cliente
@@ -34,8 +34,92 @@ Values
 	(111111117,'Carl',60,'930888000','joao@aquele.com','Dortmund','Alemã','12345'),
 	(111111118,'Simão',55,'930567000','joao@aquele.com','Londres','Inglesa','12345');
 	
+
+
+-- lugares
+INSERT INTO Lugar(Classe,Numero,Aviao_id)
+Values
+	('Economica','A01',1),
+	('Economica','A02',1),
+	('Economica','A03',1),
+	('Economica','A04',1),
+	('Economica','A05',1),
+	('Economica','A06',1),
+	('Economica','A07',1),
+	('Economica','A08',1),
+	('Economica','A09',1),
+	('Economica','A10',1),
+	('Economica','A01',2),
+	('Economica','A02',2),
+	('Economica','A03',2),
+	('Economica','A04',2),
+	('Economica','A05',2),
+	('Economica','A06',2),
+	('Economica','A07',2),
+	('Economica','A08',2),
+	('Economica','A09',2),
+	('Economica','A10',2),
+	('Economica','A01',3),
+	('Economica','A02',3),
+	('Economica','A03',3),
+	('Economica','A04',3),
+	('Economica','A05',3),
+	('Economica','A06',3),
+	('Economica','A07',3),
+	('Economica','A08',3),
+	('Economica','A09',3),
+	('Economica','A10',3),
+	('Economica','B01',4),
+	('Economica','B02',4),
+	('Economica','B03',4),
+	('Economica','B04',4),
+	('Economica','B05',4),
+	('Economica','B06',4),
+	('Economica','B07',4),
+	('Economica','B08',4),
+	('Economica','B09',4),
+	('Economica','B10',4),
+	('Executiva','E01',1),
+	('Executiva','E10',1),
+	('Executiva','F01',1),
+	('Executiva','F10',1),
+	('Executiva','E01',2),
+	('Executiva','E10',2),
+	('Executiva','F01',2),
+	('Executiva','F10',2),
+	('Executiva','E01',3),
+	('Executiva','E10',3),
+	('Executiva','F01',3),
+	('Executiva','F10',3),
+	('Executiva','E01',4),
+	('Executiva','E10',4),
+	('Executiva','F01',4),
+	('Executiva','F10',4);
+
+
 -- voo
+INSERT INTO voo(id,Numero_de_Voo,Hora_de_partida,Hora_de_chegada,Duraçao,Data_de_partida,Numero_de_bilhetes_Vendidos,Aeroporto_id,Aviao_id,Aeroporto_id1)
+Values
+	(1,'AAA0','10:00','12:00','02:00','2020-12-24',5,2,2,5),
+	(2,'BBB2','13:30','16:00','02:30','2021-01-01',80,7,1,1),
+	(3,'CCC1','07:30','11:00','03:30','2021-01-11',60,9,3,3),
+	(4,'ABC1','20:30','22:00','01:30','2021-02-01',30,6,4,8);
 
 -- bilhete
-    
-    
+INSERT INTO bilhete(id,Data,Gate,Numero,Classe,Preço,Cliente_NIF,Voo_id)
+Values
+	(1,'2020-12-04','A12','A01','Economica',30.00,111111111,1),
+	(2,'2020-11-04','A12','A07','Economica',30.00,111111118,1),
+	(3,'2020-11-23','A12','E01','Executiva',120.50,111111113,1),
+
+	(4,'2020-10-24','B22','E10','Executiva',100.00,111111117,2),
+	(5,'2020-10-13','B22','A01','Economica',25.00,111111116,2),
+	(6,'2020-11-07','B22','A05','Economica',25.00,111111115,2),
+
+	(7,'2020-10-04','C02','A08','Economica',34.00,111111112,3),
+	(8,'2020-10-30','C02','F01','Executiva',120.00,111111114,3),
+	(9,'2020-11-22','C02','E10','Executiva',120.00,111111111,3),
+
+	(10,'2020-12-03','D10','B04','Economica',40.00,111111118,4),
+	(11,'2020-12-02','D10','B05','Economica',40.00,111111113,4),
+	(12,'2020-11-24','D10','F10','Executiva',140.00,111111116,4);
