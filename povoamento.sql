@@ -98,7 +98,7 @@ Values
 
 
 -- voo
-INSERT INTO voo(id,Numero_de_Voo,Hora_de_partida,Hora_de_chegada,Duraçao,Data_de_partida,Numero_de_bilhetes_Vendidos,Aeroporto_id,Aviao_id,Aeroporto_id1)
+INSERT INTO voo(id,Numero_de_Voo,Hora_de_partida,Hora_de_chegada,Duraçao,Data_de_partida,Numero_de_bilhetes_Vendidos,Origem_id,Aviao_id,Destino_id)
 Values
 	(1,'AAA0','10:00','12:00','02:00','2016-12-24',5,2,2,5),
 	(2,'BBB2','13:30','16:00','02:30','2021-01-01',80,7,1,1),
@@ -216,8 +216,12 @@ DELIMITER //
 CREATE PROCEDURE voosFeitosPorUmaCompanhiaNumPeríodo
 	( IN comp VARCHAR(45), IN dt_i DATE, IN dt_f DATE)
 BEGIN
-	SELECT 
-END //
+	SELECT v.id AS ID_VOO FROM Voo AS v INNER JOIN Aviao AS a
+		on v.Aviao_id = a.id 
+			WHERE a.Companhia = comp 
+            AND v.Data_de_partida >= dt_i 
+            AND v.Data_de_partida <= dt_f;
+END //voosFeitosPorUmaCompanhiaNumPeríodo
 
 -- Saber os passageiros que viajaram entre dois aeroportos num dado periodo
 
