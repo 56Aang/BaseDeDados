@@ -153,6 +153,8 @@ BEGIN
 	WHERE voo.id = NEW.Voo_id;
 END $$
 
+-- REQUISITOS CLIENTE 
+
 DELIMITER $$
 CREATE PROCEDURE montanteGasto
 	(IN user DOUBLE, dia1 DATE, dia2 DATE)
