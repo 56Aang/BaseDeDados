@@ -202,7 +202,10 @@ DELIMITER //
 
 CREATE PROCEDURE lugaresLivres(IN id_voo INT)
 BEGIN
-		
+	SELECT Lugar.Numero,Lugar.Classe FROM Lugar
+	LEFT JOIN Aviao ON Lugar.Aviao_id = Aviao.id
+	LEFT JOIN Voo ON Voo.Aviao_id=Aviao.id
+	WHERE Voo.id=Lugar AND Lugar.Numero NOT IN (SELECT Bilhete.Numero FROM Bilhete WHERE Bilhete.voo_id=id_voo)
 END //
 
 
