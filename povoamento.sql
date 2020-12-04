@@ -150,7 +150,7 @@ FOR EACH ROW
 BEGIN
 	UPDATE Voo
 	SET Numero_de_bilhetes_Vendidos = Numero_de_bilhetes_Vendidos + 1
-	WHERE voo.id = NEW.Voo_id
+	WHERE voo.id = NEW.Voo_id;
 END $$
 
 DELIMITER $$
@@ -167,7 +167,7 @@ CALL montanteGasto(111111111,'2013-12-24','2025-01-01');
 
 
 -- ver esta
-DELIMITER $$
+montanteGastoDELIMITER $$
 CREATE PROCEDURE informacaoBilhete
 	(IN user DOUBLE)
 BEGIN
