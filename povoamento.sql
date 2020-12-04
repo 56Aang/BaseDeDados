@@ -174,7 +174,6 @@ END$$
 CALL montanteGasto(111111111,'2013-12-24','2025-01-01');
 
 
--- ver esta
 DELIMITER $$
 CREATE PROCEDURE informacaoBilhete
 	(IN user DOUBLE)
