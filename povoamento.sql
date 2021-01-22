@@ -196,17 +196,23 @@ END$$
 -- Consultar a lista de voos existentes
 
 DELIMITER //
-
-SELECT * from Voo;
-
-END //
+CREATE PROCEDURE voosExistentes()
+BEGIN
+	SELECT v.id, ao.Nome AS Aeroporto_Origem, ad.Nome as Aeroporto_Destino
+    FROM Voo v
+    JOIN Aeroporto ao
+		ON ao.id=v.Origem_id
+	JOIN Aeroporto ad
+		ON ad.id=v.Destino_id;
+END//
 
 -- Consultar a lista de aeroportos existentes
 
 DELIMITER //
-
-SELECT * from Aeroporto;
-
+CREATE PROCEDURE aeroportosExistentes()
+BEGIN
+	SELECT id AS "Código Aeroporto", Nome
+    FROM Aeroporto;
 END //
 
 -- Consultar voos disponiveis num aeroporto
@@ -246,11 +252,25 @@ BEGIN
 			WHERE a.Companhia = comp 
             AND v.Data_de_partida >= dt_i 
             AND v.Data_de_partida <= dt_f;
-END //voosFeitosPorUmaCompanhiaNumPeríodo
+END //
 
 -- Saber os passageiros que viajaram entre dois aeroportos num dado periodo
 
-
+DELIMITER //
+CREATE PROCEDURE passageirosEntreAeroportosNumPeriodo(IN aep_origem INT, aep_destino INT, data_inicio DATE, data_fim DATE)
+BEGIN
+	SELECT c.Nome
+    FROM Cliente c
+    JOIN Bilhete b
+		ON c.NIF = b.Cliente_NIF
+	JOIN Voo v
+		ON b.Voo_id = v.id
+	JOIN Aeroporto ao
+		ON ao.id = aep_origem
+	JOIN Aeroporto ad
+		ON ad.id = aep_destino
+	WHERE v.Data_de_partida BETWEEN data_inicio AND data_fim;
+END //
 -- Saber os passageiros de um voo
 
 DELIMITER //
