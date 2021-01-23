@@ -170,27 +170,23 @@ GRANT ALL ON *.* TO 'admin'@'localhost';
 -- REQUISITOS CLIENTE 
 
 DELIMITER $$
-CREATE PROCEDURE montanteGasto
-	(IN user DOUBLE, dia1 DATE, dia2 DATE)
+CREATE PROCEDURE montanteGasto(IN user DOUBLE, dia1 DATE, dia2 DATE)
 BEGIN
-SELECT SUM(b.Preço) FROM Bilhete b
-WHERE b.Cliente_NIF = user AND 
-	  dia1 <= b.Data AND
-	  dia2 >= b.Data;
+	SELECT SUM(b.Preço) FROM Bilhete b
+	WHERE b.Cliente_NIF = user AND 
+		dia1 <= b.Data AND
+		dia2 >= b.Data;
 END$$
 
 CALL montanteGasto(111111111,'2013-12-24','2025-01-01');
 
 
 DELIMITER $$
-CREATE PROCEDURE informacaoBilhete
-	(IN user DOUBLE)
+CREATE PROCEDURE informacaoBilhete(IN user DOUBLE)
 BEGIN
-SELECT (b.Data, b.Gate, b.Numero, b.Classe, b.Preço) FROM Bilhete b
-WHERE b.Cliente_NIF = user 
-AND CURRENT_TIMESTAMP() < DATE_ADD(b.Data, INTERVAL b.Voo_id.Hora_de_partida HOUR);    
-
-        
+	SELECT (b.Data, b.Gate, b.Numero, b.Classe, b.Preço) FROM Bilhete b
+	WHERE b.Cliente_NIF = user 
+		AND CURRENT_TIMESTAMP() < DATE_ADD(b.Data, INTERVAL b.Voo_id.Hora_de_partida HOUR);    
 END$$
 
 -- Consultar a lista de voos existentes
@@ -198,7 +194,7 @@ END$$
 DELIMITER //
 CREATE PROCEDURE voosExistentes()
 BEGIN
-	SELECT v.id, ao.Nome AS Aeroporto_Origem, ad.Nome as Aeroporto_Destino
+	SELECT v.id, ao.Nome AS Aeroporto_Origem, ad.Nome as Aeroporto_Destino, v.Data_de_partida as Data
     FROM Voo v
     JOIN Aeroporto ao
 		ON ao.id=v.Origem_id
@@ -235,6 +231,8 @@ BEGIN
 	LEFT JOIN Voo ON Voo.Aviao_id=Aviao.id
 	WHERE Voo.id=id_voo AND Lugar.Numero NOT IN (SELECT Bilhete.Numero FROM Bilhete WHERE Bilhete.voo_id=id_voo);
 END //
+
+
 CALL lugaresLivres(1);
 
 
@@ -247,7 +245,9 @@ DELIMITER //
 CREATE PROCEDURE voosFeitosPorUmaCompanhiaNumPeríodo
 	( IN comp VARCHAR(45), IN dt_i DATE, IN dt_f DATE)
 BEGIN
-	SELECT v.id AS ID_VOO FROM Voo AS v INNER JOIN Aviao AS a
+	SELECT v.id AS ID_VOO 
+    FROM Voo AS v 
+    INNER JOIN Aviao AS a
 		on v.Aviao_id = a.id 
 			WHERE a.Companhia = comp 
             AND v.Data_de_partida >= dt_i 
@@ -274,11 +274,13 @@ END //
 -- Saber os passageiros de um voo
 
 DELIMITER //
-
 CREATE PROCEDURE passageirosNumVoo(IN id_voo INT)
 BEGIN
-	SELECT c.Nome,c.NIF,b.Cliente_NIF FROM Bilhete b, Cliente c
-    WHERE b.Voo_id = id_voo AND b.Cliente_NIF = c.NIF;
+	SELECT c.Nome,c.NIF,b.Cliente_NIF
+    FROM Bilhete b
+    JOIN Cliente c 
+		ON b.Cliente_NIF = c.NIF
+    WHERE b.Voo_id = id_voo;
 END //
 
 CALL passageiroNumVoo(2);
