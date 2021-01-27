@@ -156,7 +156,7 @@ FROM 'cliente'@'localhost';
 -- gestor
 CREATE USER 'gestor'@'localhost'
 	identified BY 'gestorpassword';
-GRANT ALL ON *.* TO 'admin'@'localhost'
+GRANT ALL ON *.* TO 'admin'@'localhost';
 REVOKE DROP,DELETE,CREATE ON *.* FROM 'gestor'@'localhost';
 
 
