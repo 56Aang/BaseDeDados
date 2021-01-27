@@ -1,5 +1,16 @@
 USE IngressosDeAvioes;
 
+DELIMITER $$
+CREATE TRIGGER atualizaQntBilhVend
+AFTER INSERT ON Bilhete
+FOR EACH ROW
+BEGIN
+	UPDATE Voo
+	SET Numero_de_bilhetes_Vendidos = Numero_de_bilhetes_Vendidos + 1
+	WHERE voo.id = NEW.Voo_id;
+END $$
+
+
 -- aeroporto
 INSERT INTO aeroporto(id,Pais, Localidade, Codigo_Postal, Nome)
 VALUES 
@@ -25,14 +36,14 @@ Values
 -- cliente
 INSERT INTO cliente(NIF,Nome,Idade,Telemovel,Email,Morada,Nacionalidade,Password)
 Values
-	(111111111,'João',33,'910069859','joao@aquele.com','Naquele Sitio','Portuguesa','12345'),
-	(111111112,'Zé',32,'930005240','joao@aquele.com','No beco','Holandesa','12345'),
-	(111111113,'Quim',63,'960970000','joao@aquele.com','Lyon','Francesa','12345'),
-	(111111114,'Maria',45,'914500000','joao@aquele.com','Lisboa','Portuguesa','12345'),
-	(111111115,'Joana',26,'932340000','joao@aquele.com','Porto','Portuguesa','12345'),
-	(111111116,'Ana',34,'930000968','joao@aquele.com','Lagoa','Portuguesa','12345'),
-	(111111117,'Carl',60,'930888000','joao@aquele.com','Dortmund','Alemã','12345'),
-	(111111118,'Simão',55,'930567000','joao@aquele.com','Londres','Inglesa','12345');
+	(111111111,'João',33,'910069859','joao@aquele.com','Praceta dos Cães','Portuguesa','12345'),
+	(111111112,'Zé',32,'930005240','ze@aquele.com','Montanha do Pico','Holandesa','12345'),
+	(111111113,'Quim',63,'960970000','quim@aquele.com','Lyon','Francesa','12345'),
+	(111111114,'Maria',45,'914500000','maria@aquele.com','Lisboa','Portuguesa','12345'),
+	(111111115,'Joana',26,'932340000','joana@aquele.com','Porto','Portuguesa','12345'),
+	(111111116,'Ana',34,'930000968','ana@aquele.com','Lagoa','Portuguesa','12345'),
+	(111111117,'Carl',60,'930888000','carl@aquele.com','Dortmund','Alemã','12345'),
+	(111111118,'Simão',55,'930567000','simao@aquele.com','Londres','Inglesa','12345');
 	
 
 
@@ -106,16 +117,6 @@ Values
 	(4,'ABC1','20:30','22:00','01:30','2021-02-01',0,6,4,8);
 
 
-DELIMITER $$
-CREATE TRIGGER atualizaQntBilhVend
-AFTER INSERT ON Bilhete
-FOR EACH ROW
-BEGIN
-	UPDATE Voo
-	SET Numero_de_bilhetes_Vendidos = Numero_de_bilhetes_Vendidos + 1
-	WHERE voo.id = NEW.Voo_id;
-END $$
-
 
 
 -- bilhete
@@ -124,12 +125,12 @@ Values
 	(1,'2015-12-04','A12','A01','Economica',30.00,111111111,1),
 	(2,'2015-11-04','A12','A07','Economica',30.00,111111118,1),
 	(3,'2015-11-23','A12','E01','Executiva',120.50,111111113,1),
-	(16,'2020-10-13','A12','A01','Economica',10.00,111111116,1),
+	(16,'2015-10-13','A12','A02','Economica',10.00,111111116,1),
 
 	(4,'2020-10-24','B22','E10','Executiva',100.00,111111117,2),
 	(5,'2020-10-13','B22','A01','Economica',25.00,111111116,2),
 	(6,'2020-11-07','B22','A05','Economica',25.00,111111115,2),
-	(13,'2015-02-04','B12','A03','Economica',13.00,111111111,2),
+	(13,'2020-02-04','B12','A03','Economica',13.00,111111111,2),
 
 	(7,'2020-10-04','C02','A08','Economica',34.00,111111112,3),
 	(8,'2020-10-30','C02','F01','Executiva',120.00,111111114,3),
