@@ -135,7 +135,7 @@ Values
 	(7,'2020-10-04','C02','A08','Economica',34.00,111111112,3),
 	(8,'2020-10-30','C02','F01','Executiva',120.00,111111114,3),
 	(9,'2020-11-22','C02','E10','Executiva',120.00,111111111,3),
-	(14,'2015-12-04','C02','A01','Economica',9.00,111111111,3),
+	(14,'2015-12-04','C02','A01','Economica',9.00,111111115,3),
 
 	(10,'2020-12-03','D10','B04','Economica',40.00,111111118,4),
 	(11,'2020-12-02','D10','B05','Economica',40.00,111111113,4),
@@ -185,9 +185,10 @@ CALL montanteGasto(111111111,'2013-12-24','2025-01-01');
 DELIMITER $$
 CREATE PROCEDURE informacaoBilhete(IN user DOUBLE)
 BEGIN
-	SELECT (b.Data, b.Gate, b.Numero, b.Classe, b.Preço) FROM Bilhete b
-	WHERE b.Cliente_NIF = user 
-		AND CURRENT_TIMESTAMP() < DATE_ADD(b.Data, INTERVAL b.Voo_id.Hora_de_partida HOUR);    
+	SELECT b.Data, b.Gate, b.Numero, b.Classe, b.Preço 
+    FROM Bilhete b
+    JOIN Voo v ON b.Voo_id = v.id
+	WHERE b.Cliente_NIF = user;  
 END$$
 
 -- Consultar a lista de voos existentes
