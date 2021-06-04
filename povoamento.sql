@@ -244,8 +244,7 @@ CALL lugaresLivres(1);
 
 DELIMITER // 
 
-CREATE PROCEDURE voosFeitosPorUmaCompanhiaNumPeríodo
-	( IN comp VARCHAR(45), IN dt_i DATE, IN dt_f DATE)
+CREATE PROCEDURE voosFeitosPorUmaCompanhiaNumPeríodo( IN comp VARCHAR(45), IN dt_i DATE, IN dt_f DATE)
 BEGIN
 	SELECT v.id AS ID_VOO 
     FROM Voo AS v 
